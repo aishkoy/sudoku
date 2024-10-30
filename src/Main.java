@@ -5,18 +5,16 @@ public class Main{
         Random rand = new Random();
         int[][] field = new int[9][9];
 
-        for (int i = 0; i < 9; i++) {
-            boolean[] used = new boolean[9];
-            for (int j = 0; j < 9; j++) {
-                int newElement;
-                do {
-                    newElement = rand.nextInt(9);
-                } while (used[newElement]);
-                field[i][j] = newElement + 1;
-                used[newElement] = true;
+        for(int i = 0; i < 9; i++){
+            for(int j = 0; j < 9; j++){
+                int num = (i + j) % 9;
+                field[i][j] = num + 1;
                 System.out.print(field[i][j] + " ");
             }
             System.out.println();
         }
+
+        // TODO нужно думать о том, чтобы и в колону числа не повторялись
+
     }
 }
