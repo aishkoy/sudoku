@@ -1,25 +1,45 @@
 import java.util.Random;
 
 public class Main{
+    public static int boxSize = 3;
+    public static int rowSize = 9;
+    public static int colSize = 9;
+    public static int[][] field = new int[9][9];
+
     public static void main(String[] args) {
         Random rand = new Random();
-        int[][] field = new int[9][9];
 
-        for(int i = 0; i < 9; i++){
-            for(int j = 0; j < 9; j++) {
+        for(int i = 0; i < rowSize; i++){
+            for(int j = 0; j < colSize; j++) {
                 int num = (i + j) % 9;
                 field[i][j] = num + 1;
+                System.out.print(field[i][j] + " ");
             }
-        }// TODO нужно думать о том, чтобы и в колону числа не повторялись
+            System.out.println();
+        }
 
-    }
+        System.out.println();
 
-    public static int[][] findEmptyCell(int[][] field){
-        for(int i = 0; i < 9; i++){
-            for(int j = 0; j < 9; j++){
-                if(field[i][j] == 0) return field;
+        // TODO нужно перемешать матрицу
+        // TODO метод Фишера-Йетса
+
+        for(int i = 0; i < rowSize; i++){
+            for(int j = 0; j < colSize; j++){
+                int randRow = rand.nextInt(rowSize);
+                int randCol = rand.nextInt(colSize);
+
+                int temp = field[i][j];
+                field[i][j] = field[randRow][randCol];
+                field[randRow][randCol] = temp;
             }
         }
-        return null;
+
+        for(int i = 0; i < rowSize; i++){
+            for(int j = 0; j < colSize; j++){
+                System.out.print(field[i][j] + " ");
+            }
+            System.out.println();
+        }
+
     }
 }
