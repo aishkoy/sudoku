@@ -6,15 +6,20 @@ public class Main{
         int[][] field = new int[9][9];
 
         for(int i = 0; i < 9; i++){
-            for(int j = 0; j < 9; j++){
+            for(int j = 0; j < 9; j++) {
                 int num = (i + j) % 9;
                 field[i][j] = num + 1;
-                System.out.print(field[i][j] + " ");
             }
-            System.out.println();
+        }// TODO нужно думать о том, чтобы и в колону числа не повторялись
+
+    }
+
+    public static int[][] findEmptyCell(int[][] field){
+        for(int i = 0; i < 9; i++){
+            for(int j = 0; j < 9; j++){
+                if(field[i][j] == 0) return field;
+            }
         }
-
-        // TODO нужно думать о том, чтобы и в колону числа не повторялись
-
+        return null;
     }
 }
