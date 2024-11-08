@@ -10,11 +10,9 @@ public class Main{
 
 
     public static void main(String[] args) {
-        if(fillBoard(field)){
-            printBoard(field);
-        } else {
-            println("Что-то пошло не так...");
-        }
+        int[][] originBoard = getOriginBoard(field);
+        int[][] gameBoard = initGameBoard(originBoard);
+        printBoard(gameBoard);
     }
 
 
@@ -35,7 +33,7 @@ public class Main{
     }
 
 
-    public static boolean fillBoard(int[][] board){
+    public static int[][] getOriginBoard(int[][] board){
         for(int row = 0; row < rowSize; row++){
             for(int col = 0; col < colSize; col++){
                 if(board[row][col] == 0){
@@ -44,17 +42,18 @@ public class Main{
                     for(int num : numbers){
                         if(isValid(field, row, col, num)){
                             board[row][col] = num;
-                            if(fillBoard(board)){
-                                return true;
+                            int[][] result = getOriginBoard(board);
+                            if(result != null){
+                                return result;
                             }
                             board[row][col] = 0;
                         }
                     }
-                    return false;
+                    return null;
                 }
             }
         }
-        return true;
+        return board;
     }
 
     public static boolean isValid(int[][] board, int row, int col, int num){
@@ -83,6 +82,26 @@ public class Main{
         return true;
     }
 
+    public static int[][] initGameBoard(int[][] originBoard){
+        int[][] newBoard = new int[originBoard.length][originBoard[0].length];
+        for(int i = 0; i < originBoard.length; i++){
+            for(int j = 0; j < originBoard[0].length; j++){
+                newBoard[i][j] = originBoard[i][j];
+            }
+        }
+
+        int clearedCells = 40;
+        while(clearedCells > 0){
+            int randCol = rand.nextInt(colSize);
+            int randRow = rand.nextInt(rowSize);
+            if(newBoard[randRow][randCol] != 0){
+                newBoard[randRow][randCol] = 0;
+                clearedCells--;
+            }
+        }
+
+        return newBoard;
+    }
 
     public static void printBoard(int[][] board){
         for(int row = 0; row < rowSize; row++){
