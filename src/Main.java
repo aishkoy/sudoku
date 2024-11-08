@@ -10,6 +10,7 @@ public class Main{
 
 
     public static void main(String[] args) {
+        new SudokuGUI();
         int[][] originBoard = getOriginBoard(field);
         int[][] gameBoard = initGameBoard(originBoard);
         printBoard(gameBoard);
