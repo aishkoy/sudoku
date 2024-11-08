@@ -1,4 +1,5 @@
 import java.util.Random;
+import java.util.Scanner;
 
 public class Main{
     static Random rand = new Random();
@@ -12,6 +13,11 @@ public class Main{
     public static void main(String[] args) {
         int[][] originBoard = getOriginBoard(field);
         int[][] gameBoard = initGameBoard(originBoard);
+        printBoard(gameBoard);
+        for(int i = 0; i < 40; i++){
+            getUserInput(gameBoard, originBoard);
+            printBoard(gameBoard);
+        }
         printBoard(gameBoard);
     }
 
@@ -104,31 +110,95 @@ public class Main{
     }
 
     public static void printBoard(int[][] board){
+        String boardLetters = "     1  2  3     4  5  6     7  8  9";
+        String topBorder = "  ┌———————————————————————————————————┐";
+        String midBorder = "  │———————————┼———————————┼———————————│";
+        String botBorder = "  └———————————————————————————————————┘";
+        String lineSeparator = " │ ";
 
-        println("┌———————————————————————————————————┐");
+        println(boardLetters);
+        println(topBorder);
+
         for(int row = 0; row < rowSize; row++){
-            if(row % 3 == 0 && row != 0){
-                println("│———————————┼———————————┼———————————│");
-            }
-            for(int col = 0; col < colSize; col++){
 
+            if(row % 3 == 0 && row != 0){
+                println(midBorder);
+            }
+
+            print((char)('A' + row) + lineSeparator);
+
+            for(int col = 0; col < colSize; col++){
                 if(col % 3 == 0 && col != 0){
-                    print(" │ ");
+                    print(lineSeparator);
                 }
 
                 String cell = (board[row][col] == 0) ? "[ ]" : String.format(" %d ", board[row][col]);
 
                 if (col == 0) {
-                    print("│ " + cell);
+                    print(cell);
                 } else if (col == colSize - 1) {
-                    print(cell + " │");
+                    print(cell);
                 } else {
                     print(cell);
                 }
             }
-            println("");
+            println(lineSeparator + (char)('A' + row));
         }
-        println("└———————————————————————————————————┘");
+        println(botBorder);
+        println(boardLetters);
+    }
+
+    public static void getUserInput(int[][] gameBoard, int[][] originBoard){
+        Scanner sc = new Scanner(System.in);
+        int number;
+        while(true) {
+            print("\nВведите координаты ячейки (например A1, D5): ");
+            String usersCoordinates = sc.nextLine().strip().toUpperCase();
+
+            if (usersCoordinates.length() != 2 || usersCoordinates.isBlank()) {
+                println("Неверный ввод повторите попытку...");
+                continue;
+            }
+
+            if (!usersCoordinates.matches("^[A-I][1-9]$")){
+                println("Введите координаты латиницей и цифрой! (A-I) (1-9)");
+                continue;
+            }
+
+            int row = usersCoordinates.charAt(0) - 'A';
+            int col = usersCoordinates.charAt(1) - '1';
+
+            if(gameBoard[row][col] != 0){
+                println("Данная клетка уже содержит цифру!");
+                continue;
+            }
+
+            while(true) {
+                print("Введите цифру для этой ячейки:");
+                String usersInput = sc.nextLine().strip().toUpperCase();
+
+                if (usersInput.length() != 1 || usersInput.isBlank()) {
+                    println("Неверный ввод... Повторите попытку.");
+                    continue;
+                }
+                if (!usersInput.matches("^[1-9]$")) {
+                    println("Введите цифры только от 1 до 9!");
+                    continue;
+                }
+
+                number = Integer.parseInt(usersInput);
+                gameBoard[row][col] = number;
+
+                if(gameBoard[row][col] != originBoard[row][col]){
+                    println("К сожалению, это неверная цифра...");
+                    gameBoard[row][col] = 0;
+                    break;
+                }
+                println("Число успешно добавлено!");
+                break;
+            }
+            break;
+        }
     }
 
     public static void printf(String str, Object... args){
