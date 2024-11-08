@@ -104,18 +104,31 @@ public class Main{
     }
 
     public static void printBoard(int[][] board){
+
+        println("┌———————————————————————————————————┐");
         for(int row = 0; row < rowSize; row++){
             if(row % 3 == 0 && row != 0){
-                println("—————————╋—————————╋—————————");
+                println("│———————————┼———————————┼———————————│");
             }
             for(int col = 0; col < colSize; col++){
+
                 if(col % 3 == 0 && col != 0){
-                    print("│");
+                    print(" │ ");
                 }
-                printf(" %d ", board[row][col]);
+
+                String cell = (board[row][col] == 0) ? "[ ]" : String.format(" %d ", board[row][col]);
+
+                if (col == 0) {
+                    print("│ " + cell);
+                } else if (col == colSize - 1) {
+                    print(cell + " │");
+                } else {
+                    print(cell);
+                }
             }
             println("");
         }
+        println("└———————————————————————————————————┘");
     }
 
     public static void printf(String str, Object... args){
